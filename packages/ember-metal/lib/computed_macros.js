@@ -452,7 +452,7 @@ export var and = generateComputedWithProperties(function(properties) {
 
   var hamster = Hamster.create();
 
-  hamster.get('readyForRain'); // false
+  hamster.get('readyForRain'); // undefined
   hamster.set('hasUmbrella', true);
   hamster.get('readyForRain'); // true
   hamster.set('hasJacket', 'Yes');
@@ -475,6 +475,130 @@ export var or = generateComputedWithProperties(function(properties) {
     }
   }
   return value;
+});
+
+/**
+ A computed property which performs a logical `not or` on the
+ original values for the provided dependent properties.
+
+ Example
+
+ ```javascript
+ var Hamster = Ember.Object.extend({
+    isAvailable: Ember.computed.nor('isDancing', 'isSleeping', 'isCoding')
+  });
+
+ var hamster = Hamster.create();
+
+ hamster.get('isAvailable'); // true
+ hamster.set('isCoding', true);
+ hamster.get('isAvailable'); // false
+ hamster.set('isDancing', 'Yes');
+ hamster.get('isAvailable'); // false
+ hamster.set('isDancing', false);
+ hamster.set('isCoding', 0);
+ hamster.get('isAvailable'); // false
+ ```
+
+ @method nor
+ @for Ember.computed
+ @param {String} dependentKey*
+ @return {Ember.ComputedProperty} computed property which performs
+ a logical `not or` on the original values for the provided dependent properties.
+ @public
+ */
+export var nor = generateComputedWithProperties(function(properties) {
+  var value;
+  for (var key in properties) {
+    value = properties[key];
+    if (!properties.hasOwnProperty(key) && value) {
+      return value;
+    }
+  }
+  return true;
+});
+
+/**
+ A computed property which performs a logical `not and` on the
+ original values for the provided dependent properties.
+
+ Example
+
+ ```javascript
+ var Hamster = Ember.Object.extend({
+    isSafe: Ember.computed.nand('hasLighter', 'isSoakedInGasoline')
+  });
+
+ var hamster = Hamster.create();
+
+ hamster.get('isFocused'); // false
+ hamster.set('isCoding', true);
+ hamster.get('isFocused'); // true
+ hamster.set('isDancing', 'Yes');
+ hamster.get('isFocused'); // false
+ hamster.set('isDancing', false);
+ hamster.set('isCoding', 0);
+ hamster.get('isAvailable'); // false
+ ```
+
+ @method nand
+ @for Ember.computed
+ @param {String} dependentKey*
+ @return {Ember.ComputedProperty} computed property which performs
+ a logical `exclusive or` on the original values for the provided dependent properties.
+ @public
+ */
+export var xor = generateComputedWithProperties(function(properties) {
+  var value;
+  for (var key in properties) {
+    value = properties[key];
+    if (!properties.hasOwnProperty(key) && value) {
+      return value;
+    }
+  }
+  return true;
+});
+
+/**
+ A computed property which performs a logical `exclusive or` on the
+ original values for the provided dependent properties. Returns truthy
+ if exactly one property is truthy.
+
+ Example
+
+ ```javascript
+ var Hamster = Ember.Object.extend({
+    isFocused: Ember.computed.xor('isDancing', 'isSleeping', 'isCoding')
+  });
+
+ var hamster = Hamster.create();
+
+ hamster.get('isFocused'); // false
+ hamster.set('isCoding', true);
+ hamster.get('isFocused'); // true
+ hamster.set('isDancing', 'Yes');
+ hamster.get('isFocused'); // false
+ hamster.set('isDancing', false);
+ hamster.set('isCoding', 0);
+ hamster.get('isAvailable'); // false
+ ```
+
+ @method xor
+ @for Ember.computed
+ @param {String} dependentKey*
+ @return {Ember.ComputedProperty} computed property which performs
+ a logical `exclusive or` on the original values for the provided dependent properties.
+ @public
+ */
+export var xor = generateComputedWithProperties(function(properties) {
+  var value;
+  for (var key in properties) {
+    value = properties[key];
+    if (!properties.hasOwnProperty(key) && value) {
+      return value;
+    }
+  }
+  return true;
 });
 
 /**
